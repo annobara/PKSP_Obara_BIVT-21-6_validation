@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsNotEmpty, IsNumber, IsString, Min } from "class-validator";
+import { IsArray, IsInt, IsNotEmpty, IsNumber, IsPositive, IsString, Min } from "class-validator";
 
 
 export class CreateBookDto {
@@ -9,19 +9,18 @@ export class CreateBookDto {
     title: string;
 
     @ApiProperty({example: '1999', description: 'год издания'})
-    @IsNotEmpty()
-    @IsNumber()
+    @IsPositive()
+    @IsInt()
     year: number;
 
     @ApiProperty({example: '499', description: 'цена'})
     @IsNumber()
-    @Min(0)
-    @IsNotEmpty()
+    @IsPositive()
     price: number;
 
     @ApiProperty({example: '4', description: 'уникальный идентификатор автора'})
-    @IsNumber()
     @Min(1)
+    @IsInt()
     author: number;
     
     @ApiProperty({example: [1, 2], description: 'спискок идентификаторов жанров'})

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsInt, IsNotEmpty, IsPositive, IsString } from "class-validator";
 
 export class CreateAuthorDto{
     @IsNotEmpty()
@@ -9,8 +9,8 @@ export class CreateAuthorDto{
     @IsString()
     lastname: string;
 
-    @IsNumber()
-    @IsString()
+    @IsPositive()
+    @IsInt()
     birthyear: number;
 
     @IsNotEmpty()

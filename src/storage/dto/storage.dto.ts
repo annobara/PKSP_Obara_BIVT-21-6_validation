@@ -1,11 +1,11 @@
-import { IsNumber, Min } from "class-validator";
+import { IsInt, Min } from "class-validator";
 
 export class CreateStorageDto {
-    @IsNumber()
     @Min(1)
+    @IsInt()
     book: number;
     
-    @IsNumber()
     @Min(1)
+    @IsInt()
     amount: number;
 }
