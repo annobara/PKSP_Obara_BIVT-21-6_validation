@@ -1,12 +1,15 @@
 import { BooksService } from './books.service';
-import { Book } from './books.entity';
-import { Controller, Get, Put, Post, Delete, Param, Body, Res, Render, UsePipes, ValidationPipe} from '@nestjs/common';
+import { Controller, Get, Put, Post, Delete, Param, Body, UsePipes, ValidationPipe, UseFilters} from '@nestjs/common';
 import { CreateBookDto } from './dto/book.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { NotFoundExceptionFilter } from 'src/filters/not-found-exception.filter';
+import { BadRequestExceptionFilter } from 'src/filters/bad-request-exception.filter';
+import { InternalServerExceptionFilter } from 'src/filters/internal-server-error.filters';
 
 
 @ApiTags('Книги')
 @Controller('books')
+@UseFilters(NotFoundExceptionFilter, BadRequestExceptionFilter, InternalServerExceptionFilter)
 export class BooksController {
     constructor(private readonly booksService: BooksService) {}
     @Get()

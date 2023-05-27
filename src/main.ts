@@ -14,6 +14,5 @@ async function bootstrap() {
  SwaggerModule.setup('api_docs', app, document); //включаем документацию
  await app.listen(3001); //устанавливаем порт прослушивания 3001
  await app.setGlobalPrefix('/api'); //глобальный префикс для роутов
- app.useGlobalPipes(new ValidationPipe());
 }
 bootstrap();

@@ -1,5 +1,5 @@
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Genre } from 'src/genres/genres.entity';
 import { Repository } from 'typeorm';
@@ -24,11 +24,14 @@ export class GenresService {
     }
 
     findAll(): Promise<Genre[]> {
-         return this.genreRepository.find() //async&&&&&&&
+         return this.genreRepository.find()
     }
 
-    async update(id: number, updatedGenre: Genre) { //promise?????????
+    async update(id: number, updatedGenre: Genre) {
         const genre = await this.genreRepository.findOne({where: {genre_id: id}});
+        if (genre == null){
+            throw new NotFoundException(`genre with id ${id} is not found`)
+        }
         genre.name = updatedGenre.name;
         await this.genreRepository.save(genre);
         return genre;

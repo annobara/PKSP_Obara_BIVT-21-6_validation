@@ -1,12 +1,16 @@
 import { AuthorsService } from './authors.service';
 import { Author } from './author.entity';
-import { Controller, Get, Put, Post, Delete, Param, Body, UsePipes, ValidationPipe} from '@nestjs/common';
+import { Controller, Get, Put, Post, Delete, Param, Body, UsePipes, ValidationPipe, UseFilters} from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateAuthorDto } from './dto/author.dto';
+import { NotFoundExceptionFilter } from 'src/filters/not-found-exception.filter';
+import { BadRequestExceptionFilter } from 'src/filters/bad-request-exception.filter';
+import { InternalServerExceptionFilter } from 'src/filters/internal-server-error.filters';
 
 
 @Controller('authors')
 @ApiTags('Авторы')
+@UseFilters(NotFoundExceptionFilter, BadRequestExceptionFilter, InternalServerExceptionFilter)
 export class AuthorsController {
     constructor(private readonly authorsService: AuthorsService) {}
     @Get()

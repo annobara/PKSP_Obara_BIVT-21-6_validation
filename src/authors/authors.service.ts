@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Author } from 'src/authors/author.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -48,6 +48,9 @@ export class AuthorsService {
 
     async update(id: number, updatedAuthor: CreateAuthorDto) {
         const author = await this.authorRepository.findOne({ where: {author_id: id}});
+        if (author == null){
+            throw new NotFoundException(`author with id ${id} is not found`)
+        }
         author.firstname = updatedAuthor.firstname;
         author.lastname = updatedAuthor.lastname;
         author.birthyear = updatedAuthor.birthyear;

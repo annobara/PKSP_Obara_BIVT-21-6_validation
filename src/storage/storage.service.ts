@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Book } from "src/books/books.entity";
 import { Storage } from "src/storage/storage.entity";
@@ -20,6 +20,9 @@ export class StorageService {
         const book = await this.bookRepository.findOneBy(
             {book_id: storageDto.book}
         );
+        if (book == null){
+            throw new NotFoundException(`book with id ${storageDto.book} is not found`)
+        }
         storage.book = book;
         await this.storageRepository.save(storage)    
         return storage;
@@ -40,12 +43,18 @@ export class StorageService {
    }
 
    async update(id: number, updatedStorage: CreateStorageDto){
-        const storage = await this.storageRepository.findOne({
-         where: { cell_id: id}
-    });
+        const storage = await this.storageRepository.findOneBy( 
+        { cell_id: id}
+    );
+    if (storage == null){
+        throw new NotFoundException(`cell with id ${id} is not found`)
+    }
     storage.book = await this.bookRepository.findOneBy(
         {book_id: updatedStorage.book}
     );
+    if (storage.book == null){
+        throw new NotFoundException(`book with id ${updatedStorage.book} is not found`)
+    }
     storage.amount = updatedStorage.amount;
     storage.delivery_date = new Date();
     await this.storageRepository.save(storage);

@@ -1,11 +1,14 @@
 import { StorageService } from './storage.service';
-import { Storage } from './storage.entity';
-import { Controller, Get, Put, Post, Delete, Param, Body, UsePipes, ValidationPipe} from '@nestjs/common';
+import { Controller, Get, Put, Post, Delete, Param, Body, UsePipes, ValidationPipe, UseFilters} from '@nestjs/common';
 import { CreateStorageDto } from './dto/storage.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { NotFoundExceptionFilter } from 'src/filters/not-found-exception.filter';
+import { BadRequestExceptionFilter } from 'src/filters/bad-request-exception.filter';
+import { InternalServerExceptionFilter } from 'src/filters/internal-server-error.filters';
 
 @ApiTags('Склад')
 @Controller('storage')
+@UseFilters(NotFoundExceptionFilter, BadRequestExceptionFilter, InternalServerExceptionFilter)
 export class StorageController {
     constructor(private readonly storageService: StorageService) {}
     @Get()

@@ -1,11 +1,15 @@
 import { GenresService } from './genres.service';
 import { Genre } from './genres.entity';
-import { Controller, Get, Put, Post, Delete, Param, Body} from '@nestjs/common';
+import { Controller, Get, Put, Post, Delete, Param, Body, UseFilters} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { NotFoundExceptionFilter } from 'src/filters/not-found-exception.filter';
+import { BadRequestExceptionFilter } from 'src/filters/bad-request-exception.filter';
+import { InternalServerExceptionFilter } from 'src/filters/internal-server-error.filters';
 
 
 @ApiTags('Жанры')
 @Controller('genres')
+@UseFilters(NotFoundExceptionFilter, BadRequestExceptionFilter, InternalServerExceptionFilter)
 export class GenresController {
     constructor(private readonly genresService: GenresService) {}
     @Get()

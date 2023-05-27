@@ -1,10 +1,15 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, UseFilters, UsePipes, ValidationPipe } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/user.dto";
+import { NotFoundExceptionFilter } from "src/filters/not-found-exception.filter";
+import { BadRequestExceptionFilter } from "src/filters/bad-request-exception.filter";
+import { InternalServerExceptionFilter } from "src/filters/internal-server-error.filters";
+
 
 @ApiTags('Пользователи')
 @Controller('users')
+@UseFilters(NotFoundExceptionFilter, BadRequestExceptionFilter, InternalServerExceptionFilter)
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
     @Get()
